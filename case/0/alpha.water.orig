@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    object      alpha.water;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0]; //kg m s K mol A cd
+
+internalField   uniform 0; //initially air in the entire domain - we will change that with setFields!
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+	value	 	uniform 0;//air enters the domain
+    }
+    
+    lid
+    {
+//    This boundary condition provides a generic outflow condition, with
+//    specified inflow for the case of return flow.
+//    The mode of operation is determined by the sign of the flux across the
+//    patch faces.
+        type            inletOutlet;
+        inletValue      uniform 0;
+        value           uniform 0;
+    }
+    
+    boilingFlask
+    {
+        type            contactAngle;
+        theta0		40;
+        limit		gradient;
+        value		uniform 0;
+    }
+    
+    symmX
+    {
+    	type            symmetry;
+    }
+    
+    symmY
+    {
+    	type		symmetry;
+    }
+}
+
+// ************************************************************************* //
